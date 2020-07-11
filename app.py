@@ -23,7 +23,7 @@ async def retrieve_task():
     task_list["task"] = []
     for task in collection.find():
         task_list["task"].append(
-            {"id": str(task["_id"]), "task_name": task["task_name"], "due_date": task["due"], "status": task["status"]})
+            {"id": str(task["_id"]), "task_name": task["task_name"], "due_date": task["due_date"], "status": task["status"]})
     return{"task": task_list}
 
 
@@ -31,13 +31,13 @@ async def retrieve_task():
 @app.get("/api/v1/task/{task_id}")
 async def retrieve_task(task_id: str):
 
-    tasks_list = {}
-    tasks_list["tasks"] = []
+    task_list = {}
+    task_list["task"] = []
     cursor = collection.find_one({"_id": ObjectId(task_id)})
 
     async for i in cursor:
-        await tasks_list["tasks"].append(
-            {"id": str(i["_id"]), "taskname": i["taskname"], "due": i["due"], "status": i["status"]})
+        await task_list["task"].append(
+            {"id": str(i["_id"]), "task_name": i["task_name"], "due_date": i["due_date"], "status": i["status"]})
     return {"task": task_list}
 
 
