@@ -1,8 +1,6 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 import pymongo
 import uvicorn
-import os
 from bson.objectid import ObjectId
 
 mongo = pymongo.MongoClient(
