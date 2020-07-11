@@ -15,6 +15,7 @@ collection = db["task"]
 app = FastAPI()
 
 
+#Viewing the complete task list
 @app.get('/api/v1/task')
 async def retrieve_task():
 
@@ -23,9 +24,10 @@ async def retrieve_task():
     for task in collection.find():
         task_list["task"].append(
             {"id": str(task["_id"]), "task_name": task["task_name"], "due_date": task["due"], "status": task["status"]})
-    return{"task": tasks_list}
+    return{"task": task_list}
 
 
+#View a particular task with task_id
 @app.get("/api/v1/task/{task_id}")
 async def retrieve_task(task_id: str):
 
@@ -36,9 +38,10 @@ async def retrieve_task(task_id: str):
     async for i in cursor:
         await tasks_list["tasks"].append(
             {"id": str(i["_id"]), "taskname": i["taskname"], "due": i["due"], "status": i["status"]})
-    return {"task": tasks_list}
+    return {"task": task_list}
 
 
+#Add a task
 @app.post('/api/v1/task')
 async def add_new_task(task, due_date):
 
@@ -50,6 +53,7 @@ async def add_new_task(task, due_date):
     return{"Message": "Task is not added"}
 
 
+#Update a task with task_id
 @app.put("/api/v1/task/{task_id}")
 async def update_task(task_id: str, task, due_date, status):
 
@@ -58,6 +62,7 @@ async def update_task(task_id: str, task, due_date, status):
     return{"Message": "Updated Successfully"}
 
 
+#Delete a task with task_id
 @app.delete("/api/v1/task/{task_id}")
 async def delete_task(task_id: str):
     collection.delete_one({"_id": ObjectId(task_id)})
